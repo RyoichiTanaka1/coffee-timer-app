@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4:6メソッド アシスタント</title>
+<style>
+    body {
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #e0f2f7; /* 明るい水色系の背景 */
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .container {
+        background-color: #ffffff; /* 白いコンテナ */
+        padding: 40px;
+        border-radius: 12px; /* 角を丸く */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* 影を強調 */
+        text-align: center;
+        width: 90%;
+        max-width: 450px; /* スマートフォンでの見やすさを考慮 */
+        border: 1px solid #c0e0e7; /* わずかな枠線 */
+    }
+    h1 {
+        color: #2c3e50; /* ダークネイビー系の見出し色 */
+        margin-bottom: 25px;
+        font-size: 2.2em;
+        font-weight: 600; /* 少し太めのフォント */
+    }
+    p {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+    #waterAmount {
+        font-size: 3.8em; /* より大きく */
+        color: #007bff; /* 青を強調 */
+        font-weight: 700; /* さらに太く */
+        margin: 25px 0;
+        letter-spacing: 1px; /* 文字間隔を少し開ける */
+    }
+    #timerDisplay {
+        font-size: 2.8em; /* 大きく */
+        color: #4CAF50; /* 緑を強調 */
+        font-weight: 600;
+        margin-bottom: 30px;
+        font-family: 'Courier New', monospace; /* タイマーは等幅フォントで */
+        background-color: #f0f0f0; /* 背景色 */
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block; /* 中央寄せ用 */
+    }
+    button {
+        padding: 18px 35px; /* 大きなボタン */
+        font-size: 1.4em;
+        background-color: #007bff; /* 青系のボタン */
+        color: white;
+        border: none;
+        border-radius: 8px; /* 角を丸く */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease; /* ホバーとクリックのアニメーション */
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* ボタンの影 */
+        outline: none; /* フォーカス時の枠線を消す */
+    }
+    button:hover {
+        background-color: #0056b3; /* ホバーで少し濃く */
+        transform: translateY(-2px); /* 少し浮き上がる */
+    }
+    button:active {
+        background-color: #004085; /* クリックでさらに濃く */
+        transform: translateY(0); /* 元に戻る */
+    }
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        box-shadow: none; /* 影を消す */
+        transform: none; /* アニメーションを無効に */
+    }
+    .links {
+        margin-top: 30px;
+        border-top: 1px solid #eee; /* 上部に区切り線 */
+        padding-top: 20px;
+    }
+    .links a {
+        display: block;
+        margin-bottom: 8px; /* リンク間のスペース */
+        color: #007bff;
+        text-decoration: none;
+        font-size: 1.05em;
+        transition: color 0.2s ease;
+    }
+    .links a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    /* about.html 用の追加スタイル */
+    .container h2 {
+        text-align: left; /* 概要ページのH2は左寄せ */
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 8px;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        color: #34495e; /* 少し落ち着いた見出し色 */
+    }
+    .container ul, .container ol {
+        padding-left: 25px; /* リストのインデントを調整 */
+    }
+    .container li {
+        margin-bottom: 8px;
+        line-height: 1.7;
+    }
+    .back-link {
+        margin-top: 40px;
+        font-size: 1.2em;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>4:6メソッド<br>アシスタント</h1>
+        <p>現在のステップ:</p>
+        <div id="waterAmount">準備中...</div>
+        <p>経過時間:</p>
+        <div id="timerDisplay">00:00</div>
+        <br>
+        <button id="startButton">スタート</button>
+
+        <div class="links">
+            <a href="/about">4:6メソッドについて (概要)</a>
+            <a href="https://youtu.be/lJNPp-onikk?si=nCe-vBADfznpoGGp" target="_blank">元のYouTube動画を見る</a>
+            </div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const waterAmountDisplay = document.getElementById('waterAmount');
+
+        let totalSeconds = 0;
+        let intervalId;
+        const alarmInterval = 45; // 45秒ごとにアラーム
+        let lastAlarmTime = 0; // 最後にアラームが鳴った時間（秒）
+        let currentPour = 0; // 現在の投数 (0:準備中, 1:1投目, ..., 5:5投目)
+        const maxPours = 5; // 最大投数
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        function resetState() {
+            clearInterval(intervalId);
+            totalSeconds = 0;
+            lastAlarmTime = 0;
+            currentPour = 0;
+            timerDisplay.textContent = '00:00';
+            waterAmountDisplay.textContent = '準備中...';
+            startButton.disabled = false;
+        }
+
+        startButton.addEventListener('click', () => {
+            resetState(); // 複数回押された場合のためにリセット
+            startButton.disabled = true; // ボタンを無効化して二重クリックを防ぐ
+
+            currentPour = 1; // 1投目から開始
+            waterAmountDisplay.textContent = `${currentPour}投目`;
+
+            intervalId = setInterval(() => {
+                totalSeconds++;
+                timerDisplay.textContent = formatTime(totalSeconds);
+
+                // アラーム間隔に達したら
+                if (totalSeconds - lastAlarmTime >= alarmInterval) {
+                    lastAlarmTime = totalSeconds; // アラームが鳴った時間を更新
+
+                    if (currentPour < maxPours) {
+                        // 5投目未満の場合
+                        alert(`アラーム！ ${currentPour}投目が終了しました。次のお湯を注いでください。`);
+                        currentPour++;
+                        waterAmountDisplay.textContent = `${currentPour}投目`;
+                    } else if (currentPour === maxPours) {
+                        // 5投目終了のアラーム
+                        alert('コーヒーが淹れられました。タイマーを終了します。');
+                        waterAmountDisplay.textContent = 'コーヒーが淹れられました。';
+                        resetState(); // タイマーを停止し、状態をリセット
+                    }
+                }
+            }, 1000); // 1秒ごとに更新
+        });
+
+        // ページを離れるときにタイマーをクリアする（オプション）
+        window.addEventListener('beforeunload', () => {
+            clearInterval(intervalId);
+        });
+    </script>
+</body>
+</html>

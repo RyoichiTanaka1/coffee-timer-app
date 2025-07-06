@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4:6メソッドについて</title>
+<style>
+    body {
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #e0f2f7; /* 明るい水色系の背景 */
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .container {
+        background-color: #ffffff; /* 白いコンテナ */
+        padding: 40px;
+        border-radius: 12px; /* 角を丸く */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* 影を強調 */
+        text-align: center;
+        width: 90%;
+        max-width: 450px; /* スマートフォンでの見やすさを考慮 */
+        border: 1px solid #c0e0e7; /* わずかな枠線 */
+    }
+    h1 {
+        color: #2c3e50; /* ダークネイビー系の見出し色 */
+        margin-bottom: 25px;
+        font-size: 2.2em;
+        font-weight: 600; /* 少し太めのフォント */
+    }
+    p {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+    #waterAmount {
+        font-size: 3.8em; /* より大きく */
+        color: #007bff; /* 青を強調 */
+        font-weight: 700; /* さらに太く */
+        margin: 25px 0;
+        letter-spacing: 1px; /* 文字間隔を少し開ける */
+    }
+    #timerDisplay {
+        font-size: 2.8em; /* 大きく */
+        color: #4CAF50; /* 緑を強調 */
+        font-weight: 600;
+        margin-bottom: 30px;
+        font-family: 'Courier New', monospace; /* タイマーは等幅フォントで */
+        background-color: #f0f0f0; /* 背景色 */
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block; /* 中央寄せ用 */
+    }
+    button {
+        padding: 18px 35px; /* 大きなボタン */
+        font-size: 1.4em;
+        background-color: #007bff; /* 青系のボタン */
+        color: white;
+        border: none;
+        border-radius: 8px; /* 角を丸く */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease; /* ホバーとクリックのアニメーション */
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* ボタンの影 */
+        outline: none; /* フォーカス時の枠線を消す */
+    }
+    button:hover {
+        background-color: #0056b3; /* ホバーで少し濃く */
+        transform: translateY(-2px); /* 少し浮き上がる */
+    }
+    button:active {
+        background-color: #004085; /* クリックでさらに濃く */
+        transform: translateY(0); /* 元に戻る */
+    }
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        box-shadow: none; /* 影を消す */
+        transform: none; /* アニメーションを無効に */
+    }
+    .links {
+        margin-top: 30px;
+        border-top: 1px solid #eee; /* 上部に区切り線 */
+        padding-top: 20px;
+    }
+    .links a {
+        display: block;
+        margin-bottom: 8px; /* リンク間のスペース */
+        color: #007bff;
+        text-decoration: none;
+        font-size: 1.05em;
+        transition: color 0.2s ease;
+    }
+    .links a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    /* about.html 用の追加スタイル */
+    .container h2 {
+        text-align: left; /* 概要ページのH2は左寄せ */
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 8px;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        color: #34495e; /* 少し落ち着いた見出し色 */
+    }
+    .container ul, .container ol {
+        padding-left: 25px; /* リストのインデントを調整 */
+    }
+    .container li {
+        margin-bottom: 8px;
+        line-height: 1.7;
+    }
+    .back-link {
+        margin-top: 40px;
+        font-size: 1.2em;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>4:6メソッドについて</h1>
+        <p>この動画では、2016年のワールド・ブリュワーズ・カップで優勝した粕谷哲さんが考案した「<strong>4:6メソッド</strong>」というコーヒーの淹れ方を紹介しています。</p>
+
+        <h2>4:6メソッドの概要</h2>
+        <ul>
+            <li>
+                <strong>コンセプト:</strong> 誰でも簡単に美味しいコーヒーを淹れられるように、数値でコントロールできる方法。
+            </li>
+            <li>
+                <strong>名前の由来:</strong> 使うお湯の総量を40%と60%に分けて、それぞれに役割を持たせることから名付けられました。
+            </li>
+            <li>
+                <strong>特徴:</strong>
+                <ul>
+                    <li>特別な技術は不要で、正しい知識があれば誰でも美味しいコーヒーを淹れられる。</li>
+                    <li>どんな豆でも美味しく淹れられる汎用性の高さ。</li>
+                    <li>世界中のプロや家庭で愛用されている実績。</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>具体的な淹れ方（ベーシックな方法）</h2>
+        <p>（このアプリでは、簡略化された5投方式でアラームを鳴らしています。）</p>
+        <ol>
+            <li>
+                <strong>準備:</strong>
+                <ul>
+                    <li>コーヒー粉20gを用意する。</li>
+                    <li>お湯の温度は豆の種類によって調整する（浅煎りなら93℃前後、深煎りなら83℃前後）。</li>
+                    <li>粉の挽き目は粗挽きを推奨。</li>
+                    <li>ペーパーフィルターをお湯でリンスし、ドリッパーとサーバーを温める。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>抽出:</strong>
+                <ul>
+                    <li>
+                        <strong>最初の40%（味の調整）：</strong>
+                        <br>1投目：粉の重さの3倍量（今回は60g）のお湯を注ぎ、蒸らす。
+                        <br>2投目：同じく60gのお湯を注ぐ。
+                        <br>この1投目と2投目の湯量のバランスで、酸味と甘味のバランスを調整できる（1投目を減らすと甘味が、増やすと酸味が際立つ）。
+                    </li>
+                    <li>
+                        <strong>残りの60%（濃度の調整）：</strong>
+                        <br>お湯が落ち切ってから次を注ぐのがポイント。
+                        <br>今回は60gずつ3回に分けて注ぐことで、しっかりとした濃さのコーヒーを作る。
+                        <br>注ぐ回数を減らす（2回や1回）と、より薄いコーヒーになる。
+                    </li>
+                    <li>
+                        <strong>抽出時間:</strong> 全体で3分半～4分程度で落ち切るのが理想。
+                    </li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>4:6メソッドのポイント</h2>
+        <ul>
+            <li>
+                <strong>お湯が落ち切ってから注ぐ:</strong> これにより、粗挽きでもしっかりと濃いコーヒーを抽出できる。
+            </li>
+            <li>
+                <strong>時間管理:</strong> 抽出時間を目安に挽き目を調整することで、安定した濃度感を得られる。
+            </li>
+            <li>
+                <strong>カスタマイズ性:</strong> このメソッドはあくまでベースであり、これを元に自分の好みに合わせてアレンジすることが推奨されている。
+            </li>
+        </ul>
+        <p>粕谷さんは、この4:6メソッドが「ベストな淹れ方」ではなく、皆さんが自分の好みの味を見つけるための「羅針盤」のような役割を果たすことを願っていると語っています。</p>
+
+        <a href="/" class="back-link">トップページに戻る</a>
+    </div>
+</body>
+</html>
